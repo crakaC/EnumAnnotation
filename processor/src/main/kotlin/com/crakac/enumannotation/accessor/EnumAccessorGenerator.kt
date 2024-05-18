@@ -114,7 +114,7 @@ class EnumAccessorGenerator(
     ): FunSpec {
         return FunSpec.getterBuilder()
             .addStatement(
-                "return %TParser.parse(%L)",
+                "return %T_Parser.parse(%L)",
                 enumClassName,
                 backingPropertyName,
             )
@@ -143,7 +143,7 @@ class EnumAccessorGenerator(
     ): FunSpec {
         return FunSpec.getterBuilder()
             .addStatement(
-                "return %L.map(%TParser::parse)",
+                "return %L.map(%T_Parser::parse)",
                 backingPropertyName,
                 enumClassName
             )

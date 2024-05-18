@@ -48,7 +48,7 @@ class ParsableEnumProcessor(
             check(function.parameters.isNotEmpty())
             val classDeclaration = function.parentDeclaration!! as KSClassDeclaration
             val packageName = classDeclaration.containingFile!!.packageName.asString()
-            val className = "${classDeclaration.simpleName.asString()}Parser"
+            val className = "${classDeclaration.simpleName.asString()}_Parser"
             val fileSpecBuilder = FileSpec.builder(packageName, className)
             val classBuilder = TypeSpec.classBuilder(className)
             val enumParameterName = function.parameters[0].name!!
