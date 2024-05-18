@@ -10,7 +10,7 @@ class EnumAnnotationsTest {
     @Before
     fun setup() {
         a = A(
-            mutable = "",
+            mutable = "invalid",
             readOnly = "a",
             mutableList = listOf("a", "b", "c"),
             readOnlyList = listOf("")

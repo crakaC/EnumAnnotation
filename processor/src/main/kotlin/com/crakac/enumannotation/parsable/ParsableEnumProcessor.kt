@@ -34,7 +34,11 @@ class ParsableEnumProcessor(
     }
 
     private inner class ClassVisitor : KSVisitorVoid() {
+        private lateinit var fallbackName: String
         override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
+            fallbackName = classDeclaration.annotations.first {
+                it.annotationType.resolve().declaration.simpleName.asString() == ParsableEnum::class.simpleName
+            }.arguments[0].value as String
             classDeclaration.primaryConstructor!!.accept(this, data)
         }
 
@@ -47,21 +51,25 @@ class ParsableEnumProcessor(
             val fileSpecBuilder = FileSpec.builder(packageName, className)
             val classBuilder = TypeSpec.classBuilder(className)
             val enumParameterName = function.parameters[0].name!!
-            val companion = TypeSpec.companionObjectBuilder()
-                .addFunction(
-                    FunSpec.builder("parse")
-                        .addParameter(ParameterSpec.builder("rawValue", String::class).build())
-                        .returns(classDeclaration.toClassName())
-                        .addStatement(
-                            """
-                                return %T.entries.find{ it.%N == `rawValue`} ?: %T.Unknown 
-                            """.trimIndent(),
-                            classDeclaration.toClassName(),
-                            enumParameterName.asString(),
-                            classDeclaration.toClassName()
-                        )
-                        .build()
+            val funSpecBuilder = FunSpec.builder("parse")
+                .addParameter(ParameterSpec.builder("rawValue", String::class).build())
+                .returns(classDeclaration.toClassName())
+            if (fallbackName.isNotEmpty()) {
+                funSpecBuilder.addStatement(
+                    "return %T.entries.find{ it.%N == `rawValue`} ?: %T.$fallbackName",
+                    classDeclaration.toClassName(),
+                    enumParameterName.asString(),
+                    classDeclaration.toClassName()
                 )
+            } else {
+                funSpecBuilder.addStatement(
+                    "return %T.entries.first{ it.%N == `rawValue`}",
+                    classDeclaration.toClassName(),
+                    enumParameterName.asString()
+                )
+            }
+            val companion = TypeSpec.companionObjectBuilder()
+                .addFunction(funSpecBuilder.build())
                 .build()
             classBuilder.addType(companion)
             fileSpecBuilder.addType(classBuilder.build())

@@ -14,7 +14,7 @@ data class A(
     val readOnlyList: List<String>
 )
 
-@ParsableEnum
+@ParsableEnum(fallback = "Unknown")
 enum class Type(val stringValue: String = "") {
     A("a"),
     B("b"),
