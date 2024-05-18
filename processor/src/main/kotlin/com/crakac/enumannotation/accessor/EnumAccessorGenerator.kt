@@ -11,6 +11,7 @@ import com.google.devtools.ksp.symbol.KSType
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.LIST
 import com.squareup.kotlinpoet.ParameterizedTypeName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
@@ -41,17 +42,13 @@ class EnumAccessorGenerator(
             val enumParameterName = enumParameterNames[enumClassName]!!.asString()
 
             if (propertyDeclaration.type.resolve().declaration.simpleName.asString() == "List") {
-                val list = ClassName("kotlin.collections", "List")
-                val enumList = list.parameterizedBy(enumClassName)
+                val enumList = LIST.parameterizedBy(enumClassName)
                 fileSpecBuilder.addProperty(
-                    PropertySpec.builder(
-                        accessorName,
-                        enumList
-                    ).receiver(classDeclaration.toClassName())
+                    PropertySpec.builder(accessorName, enumList)
+                        .receiver(classDeclaration.toClassName())
                         .mutable(propertyDeclaration.isMutable)
-                        .getter(
-                            generateListGetter(backingPropertyName, enumClassName)
-                        ).setter(
+                        .getter(generateListGetter(backingPropertyName, enumClassName))
+                        .setter(
                             if (propertyDeclaration.isMutable) {
                                 generateListSetter(
                                     enumClassName,
@@ -66,14 +63,10 @@ class EnumAccessorGenerator(
                 )
             } else {
                 fileSpecBuilder.addProperty(
-                    PropertySpec.builder(
-                        accessorName,
-                        enumClassName
-                    ).receiver(classDeclaration.toClassName())
+                    PropertySpec.builder(accessorName, enumClassName)
+                        .receiver(classDeclaration.toClassName())
                         .mutable(propertyDeclaration.isMutable)
-                        .getter(
-                            generateGetter(enumClassName, backingPropertyName)
-                        )
+                        .getter(generateGetter(enumClassName, backingPropertyName))
                         .setter(
                             if (propertyDeclaration.isMutable) {
                                 generateSetter(
@@ -130,7 +123,7 @@ class EnumAccessorGenerator(
         return FunSpec.setterBuilder()
             .addParameter("newValue", enumList)
             .addStatement(
-                "%L = newValue.map(%L::%L)",
+                "%L = newValue.map(%T::%L)",
                 backingPropertyName,
                 enumClassName,
                 enumParameterName

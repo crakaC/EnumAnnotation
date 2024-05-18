@@ -19,6 +19,7 @@ import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.ksp.toClassName
+import com.squareup.kotlinpoet.ksp.toTypeName
 import com.squareup.kotlinpoet.ksp.writeTo
 
 class ParsableEnumProcessor(
@@ -47,25 +48,27 @@ class ParsableEnumProcessor(
             check(function.isConstructor())
             check(function.parameters.isNotEmpty())
             val classDeclaration = function.parentDeclaration!! as KSClassDeclaration
+            val className = classDeclaration.toClassName()
             val packageName = classDeclaration.containingFile!!.packageName.asString()
-            val className = "${classDeclaration.simpleName.asString()}_Parser"
-            val fileSpecBuilder = FileSpec.builder(packageName, className)
-            val classBuilder = TypeSpec.classBuilder(className)
+            val parserClassName = "${classDeclaration.simpleName.asString()}_Parser"
+            val fileSpecBuilder = FileSpec.builder(packageName, parserClassName)
+            val classBuilder = TypeSpec.classBuilder(parserClassName)
             val enumParameterName = function.parameters[0].name!!
+            val enumParameterType = function.parameters[0].type.toTypeName()
             val funSpecBuilder = FunSpec.builder("parse")
-                .addParameter(ParameterSpec.builder("rawValue", String::class).build())
+                .addParameter(ParameterSpec.builder("rawValue", enumParameterType).build())
                 .returns(classDeclaration.toClassName())
             if (fallbackName.isNotEmpty()) {
                 funSpecBuilder.addStatement(
                     "return %T.entries.find{ it.%N == `rawValue`} ?: %T.$fallbackName",
-                    classDeclaration.toClassName(),
+                    className,
                     enumParameterName.asString(),
-                    classDeclaration.toClassName()
+                    className
                 )
             } else {
                 funSpecBuilder.addStatement(
                     "return %T.entries.first{ it.%N == `rawValue`}",
-                    classDeclaration.toClassName(),
+                    className,
                     enumParameterName.asString()
                 )
             }

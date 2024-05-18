@@ -11,7 +11,10 @@ data class A(
     @EnumAccessor("mutableTypes", Type::class)
     var mutableList: List<String>,
     @EnumAccessor("readOnlyTypes", Type::class)
-    val readOnlyList: List<String>
+    val readOnlyList: List<String>,
+
+    @EnumAccessor("kind", Kind::class)
+    val intValue: Int = 0
 )
 
 @ParsableEnum(fallback = "Unknown")
