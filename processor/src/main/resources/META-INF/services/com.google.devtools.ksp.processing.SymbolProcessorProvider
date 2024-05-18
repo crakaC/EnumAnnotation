@@ -1,0 +1,2 @@
+com.crakac.enumannotation.parsable.ParsableEnumProcessorProvider
+com.crakac.enumannotation.accessor.EnumAccessorProcessorProvider
