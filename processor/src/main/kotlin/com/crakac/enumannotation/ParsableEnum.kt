@@ -1,3 +1,3 @@
-package com.crakac.enumannotation.parsable
+package com.crakac.enumannotation
 
 annotation class ParsableEnum(val fallback: String = "")

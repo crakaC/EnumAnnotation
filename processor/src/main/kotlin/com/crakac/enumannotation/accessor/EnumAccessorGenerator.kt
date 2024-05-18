@@ -1,5 +1,6 @@
 package com.crakac.enumannotation.accessor
 
+import com.crakac.enumannotation.EnumAccessor
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.KSPLogger

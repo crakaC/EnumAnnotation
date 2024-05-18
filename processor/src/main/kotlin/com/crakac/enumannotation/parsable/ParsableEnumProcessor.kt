@@ -1,5 +1,6 @@
 package com.crakac.enumannotation.parsable
 
+import com.crakac.enumannotation.ParsableEnum
 import com.google.devtools.ksp.isConstructor
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies

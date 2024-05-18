@@ -1,4 +1,4 @@
-package com.crakac.enumannotation.accessor
+package com.crakac.enumannotation
 
 import kotlin.reflect.KClass
 

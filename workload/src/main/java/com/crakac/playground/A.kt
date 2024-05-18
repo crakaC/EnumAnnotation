@@ -1,7 +1,7 @@
 package com.crakac.playground
 
-import com.crakac.enumannotation.accessor.EnumAccessor
-import com.crakac.enumannotation.parsable.ParsableEnum
+import com.crakac.enumannotation.EnumAccessor
+import com.crakac.enumannotation.ParsableEnum
 
 data class A(
     @EnumAccessor("mutableType", Type::class)
