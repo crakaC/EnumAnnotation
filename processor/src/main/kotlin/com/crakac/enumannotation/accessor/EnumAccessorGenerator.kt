@@ -18,7 +18,7 @@ import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.writeTo
 
-class EnumAccessorGenerator(
+internal class EnumAccessorGenerator(
     private val codeGenerator: CodeGenerator,
     private val logger: KSPLogger,
     private val classDeclaration: KSClassDeclaration,

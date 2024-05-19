@@ -14,7 +14,7 @@ import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.google.devtools.ksp.validate
 import com.squareup.kotlinpoet.ksp.toClassName
 
-class EnumAccessorProcessor(
+internal class EnumAccessorProcessor(
     private val codeGenerator: CodeGenerator,
     private val logger: KSPLogger
 ) : SymbolProcessor {
@@ -41,7 +41,7 @@ class EnumAccessorProcessor(
     }
 }
 
-class EnumAccessorProcessorProvider : SymbolProcessorProvider {
+internal class EnumAccessorProcessorProvider : SymbolProcessorProvider {
     override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
         return EnumAccessorProcessor(environment.codeGenerator, environment.logger)
     }

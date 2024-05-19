@@ -22,7 +22,7 @@ import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.toTypeName
 import com.squareup.kotlinpoet.ksp.writeTo
 
-class ParsableEnumProcessor(
+internal class ParsableEnumProcessor(
     private val codeGenerator: CodeGenerator,
     private val logger: KSPLogger
 ) : SymbolProcessor {
@@ -83,7 +83,7 @@ class ParsableEnumProcessor(
     }
 }
 
-class ParsableEnumProcessorProvider : SymbolProcessorProvider {
+internal class ParsableEnumProcessorProvider : SymbolProcessorProvider {
     override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
         return ParsableEnumProcessor(environment.codeGenerator, environment.logger)
     }
