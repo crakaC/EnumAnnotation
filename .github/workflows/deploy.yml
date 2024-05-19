@@ -16,9 +16,12 @@ permissions:
   id-token: write
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
 
     steps:
       - uses: actions/checkout@v4
@@ -27,25 +30,23 @@ jobs:
       - name: Test
         run: ./gradlew test
 
+      - name: Publishing
+        env:
+          PACKAGING_USER: ${{ secrets.PACKAGING_USER }}
+          PACKAGING_TOKEN: ${{ secrets.PACKAGING_TOKEN }}
+        run: ./gradlew publish
+
       - name: Build Documents
         run: ./gradlew dokkaHtml
 
       - name: Setup Pages
-        id: pages
         uses: actions/configure-pages@v5
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./build/docs
+          path: ./processor/build/docs
 
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
