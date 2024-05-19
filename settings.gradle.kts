@@ -14,4 +14,4 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootProject.name = "EnumAnnotation"
 include(":processor")
-include(":workload")
+include(":example")
