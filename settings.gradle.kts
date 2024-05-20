@@ -12,6 +12,6 @@ dependencyResolutionManagement {
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-rootProject.name = "EnumAnnotation"
+rootProject.name = "ParsableEnum"
 include(":processor")
 include(":example")

@@ -16,10 +16,8 @@ dependencies {
 val dokkaHtml by tasks.getting(DokkaTask::class)
 
 tasks.dokkaHtml.configure {
+    moduleName = "ParsableEnum"
     outputDirectory.set(project.layout.buildDirectory.file("docs").get().asFile)
-}
-
-tasks.withType<DokkaTask> {
     dokkaSourceSets {
         configureEach {
             documentedVisibilities = setOf(Visibility.PUBLIC)
