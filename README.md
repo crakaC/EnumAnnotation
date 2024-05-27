@@ -41,7 +41,8 @@ data class B(
 ```
 
 # Usage
-Add it in your root build.gradle at the end of repositories:
+
+In your root build.gradle.kts at the end of repositories:
 ```kotlin
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
@@ -50,10 +51,18 @@ dependencyResolutionManagement {
         maven("https://jitpack.io")
     }
 }
+
+plugins {
+    id("com.google.devtools.ksp") version "2.0.0-1.0.21" apply false
+}
 ```
+
+In each module:
 ```kotlin
 dependencies {
-    implementation("com.github.crakac:parsableenum:Tag")
+    val version = "<release-version>"
+    implementation("com.github.crakac:parsableenum:$version")
+    ksp("com.github.crakac:parsableenum:$version")
 }
 ```
 # Limitation
